@@ -12,7 +12,27 @@ class AstPrinter implements Visitor<string> {
     return expr.value.toString();
   }
   visitUnaryExpr(expr: Unary): string {
-    return `${expr.operator.toString()} ${expr.right.accept(this)}}`;
+    return `${expr.operator.toString()}${expr.right.accept(this)}`;
+  }
+
+  print(expression: Expr) {
+    return expression.accept(this);
+  }
+}
+
+class AstRPNPrinter implements Visitor<string> {
+  visitBinaryExpr(expr: Binary): string {
+    return `${expr.left.accept(this)} ${expr.right.accept(this)} ${expr.operator.toString()}`;
+  }
+  visitGroupingExpr(expr: Grouping): string {
+    return expr.expression.accept(this);
+  }
+  visitNumberLiteralExpr(expr: NumberLiteral): string {
+    return expr.value.toString();
+  }
+  // Unary operators are problematic here
+  visitUnaryExpr(expr: Unary): string {
+    return `${expr.right.accept(this)} ${expr.operator.toString()}`;
   }
 
   print(expression: Expr) {
@@ -22,12 +42,16 @@ class AstPrinter implements Visitor<string> {
 
 const expression = new Binary(
   new Grouping(
-    new Binary(new NumberLiteral(2), new Token(TokenType.PLUS, "+"), new NumberLiteral(3))
+    new Binary(new NumberLiteral(1), new Token(TokenType.PLUS, "+"), new NumberLiteral(2))
   ),
   new Token(TokenType.MUL, "*"),
-  new NumberLiteral(2)
+  new Grouping(
+    new Binary(new NumberLiteral(4), new Token(TokenType.MINUS, "-"), new NumberLiteral(3))
+  )
 );
 
 const astPrinter = new AstPrinter();
+const astRPNPrinter = new AstRPNPrinter();
 
-console.log(astPrinter.print(expression));
+console.log(`Infix notation: ${astPrinter.print(expression)}`);
+console.log(`Postfix notation: ${astRPNPrinter.print(expression)}`);
