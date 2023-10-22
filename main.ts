@@ -1,3 +1,3 @@
 import { ExprEval } from "./exprEval";
 
-ExprEval.eval("(1+2)/!-3");
+ExprEval.eval("(1+2)/-3");

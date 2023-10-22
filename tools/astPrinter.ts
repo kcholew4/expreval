@@ -1,7 +1,6 @@
 import { Binary, Grouping, NumberLiteral, Unary, Visitor, Expr } from "../expr";
-import { Token, TokenType } from "../token";
 
-class AstPrinter implements Visitor<string> {
+export class AstPrinter implements Visitor<string> {
   visitBinaryExpr(expr: Binary): string {
     return `${expr.left.accept(this)} ${expr.operator.toString()} ${expr.right.accept(this)}`;
   }
@@ -20,7 +19,7 @@ class AstPrinter implements Visitor<string> {
   }
 }
 
-class AstRPNPrinter implements Visitor<string> {
+export class AstRPNPrinter implements Visitor<string> {
   visitBinaryExpr(expr: Binary): string {
     return `${expr.left.accept(this)} ${expr.right.accept(this)} ${expr.operator.toString()}`;
   }
@@ -39,19 +38,3 @@ class AstRPNPrinter implements Visitor<string> {
     return expression.accept(this);
   }
 }
-
-const expression = new Binary(
-  new Grouping(
-    new Binary(new NumberLiteral(1), new Token(TokenType.PLUS, "+"), new NumberLiteral(2))
-  ),
-  new Token(TokenType.MUL, "*"),
-  new Grouping(
-    new Binary(new NumberLiteral(4), new Token(TokenType.MINUS, "-"), new NumberLiteral(3))
-  )
-);
-
-const astPrinter = new AstPrinter();
-const astRPNPrinter = new AstRPNPrinter();
-
-console.log(`Infix notation: ${astPrinter.print(expression)}`);
-console.log(`Postfix notation: ${astRPNPrinter.print(expression)}`);
