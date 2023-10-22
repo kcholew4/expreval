@@ -3,7 +3,7 @@ import { Token } from "./token";
 export interface Visitor<T> {
   visitBinaryExpr(expr: Binary): T;
   visitGroupingExpr(expr: Grouping): T;
-  visitNumberLiteraExpr(expr: NumberLiteral): T;
+  visitNumberLiteralExpr(expr: NumberLiteral): T;
   visitUnaryExpr(expr: Unary): T;
 }
 
@@ -50,7 +50,7 @@ export class NumberLiteral extends Expr {
   }
 
   accept<T>(visitor: Visitor<T>) {
-    return visitor.visitNumberLiteraExpr(this);
+    return visitor.visitNumberLiteralExpr(this);
   }
 }
 

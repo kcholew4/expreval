@@ -8,7 +8,7 @@ class AstPrinter implements Visitor<string> {
   visitGroupingExpr(expr: Grouping): string {
     return `(${expr.expression.accept(this)})`;
   }
-  visitNumberLiteraExpr(expr: NumberLiteral): string {
+  visitNumberLiteralExpr(expr: NumberLiteral): string {
     return expr.value.toString();
   }
   visitUnaryExpr(expr: Unary): string {
