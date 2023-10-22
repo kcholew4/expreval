@@ -6,6 +6,7 @@ export enum TokenType {
   MINUS,
   MUL,
   DIV,
+  EOF,
 }
 
 export class Token {

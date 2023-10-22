@@ -17,6 +17,7 @@ export class Lexer {
       this.scanToken();
     }
 
+    this.tokens.push(new Token(TokenType.EOF, ""));
     return this.tokens;
   }
 
@@ -102,9 +103,6 @@ export class Lexer {
       }
     }
 
-    this.addToken(
-      TokenType.NUMBER,
-      parseFloat(this.source.slice(this.start, this.current)).toString()
-    );
+    this.addToken(TokenType.NUMBER, this.source.slice(this.start, this.current));
   }
 }
